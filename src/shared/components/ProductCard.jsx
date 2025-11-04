@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { ShoppingCart } from 'lucide-react'
-// import { useCartStore } from '@store/cartStore' // Se adaptará a Redux
+import { useDispatch } from 'react-redux'
+import { addItem } from '@features/cart/cartSlice'
 import Button from './Button'
 
 export default function ProductCard({ product }) {
-  // const addItem = useCartStore((state) => state.addItem) // Se adaptará a Redux
+  const dispatch = useDispatch()
 
   const handleAddToCart = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    // addItem(product, 1) // Se adaptará a Redux
-    console.log('Añadir al carrito (lógica pendiente)', product.name)
+    dispatch(addItem({ product, quantity: 1 }))
   }
 
   return (
