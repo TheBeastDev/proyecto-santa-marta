@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const mockProducts = [
   {
@@ -77,17 +77,72 @@ const mockProducts = [
 
 const initialState = {
   products: mockProducts,
-  // Otros estados relacionados a productos que podríamos necesitar
+  selectedCategory: null,
+  searchQuery: '',
+  sortBy: 'popularity',
 };
 
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    // Aquí irían los reducers para manipular los productos
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    },
   },
 });
 
-export const { } = productsSlice.actions;
+export const { setSelectedCategory, setSearchQuery, setSortBy } = productsSlice.actions;
+
+// Selectors
+const selectProducts = state => state.products.products;
+const selectSelectedCategory = state => state.products.selectedCategory;
+const selectSearchQuery = state => state.products.searchQuery;
+const selectSortBy = state => state.products.sortBy;
+
+export const selectFilteredProducts = createSelector(
+  [selectProducts, selectSelectedCategory, selectSearchQuery, selectSortBy],
+  (products, selectedCategory, searchQuery, sortBy) => {
+    let filtered = [...products];
+
+    if (selectedCategory) {
+      filtered = filtered.filter(p => p.category === selectedCategory);
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query)
+      );
+    }
+
+    if (sortBy === 'price-asc') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price-desc') {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'name') {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return filtered;
+  }
+);
+
+export const selectCategories = createSelector(
+  [selectProducts],
+  (products) => [...new Set(products.map(p => p.category))]
+);
+
+export const selectProductById = createSelector(
+  [selectProducts, (state, productId) => productId],
+  (products, productId) => products.find(p => p.id === parseInt(productId))
+);
 
 export default productsSlice.reducer;

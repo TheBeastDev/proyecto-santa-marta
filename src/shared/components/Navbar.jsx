@@ -1,14 +1,14 @@
 import { Link, NavLink } from 'react-router-dom'
 import { ShoppingCart, User, Menu, X } from 'lucide-react'
-// import { useCartStore } from '@store/cartStore' // Se adaptará a Redux
 import { useSelector } from 'react-redux'
+import { selectTotalItems } from '@features/cart/cartSlice'
 import { useState } from 'react'
+import logo from '@assets/cake-roll.svg'
 
 export default function Navbar() {
-  // const totalItems = useCartStore((state) => state.getTotalItems()) // Se adaptará a Redux
+  const totalItems = useSelector(selectTotalItems)
   const { isAuthenticated, user } = useSelector((state) => state.auth)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const totalItems = 0 // Placeholder
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded"></div>
+            <img src={logo} alt="logo" className="w-8 h-8" />
             <span className="text-xl font-bold text-gray-900">
               Panadería Santa Martha
             </span>
