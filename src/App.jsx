@@ -12,6 +12,7 @@ import LoginPage from '@features/auth/pages/LoginPage'
 import RegisterPage from '@features/auth/pages/RegisterPage'
 import CatalogPage from '@features/products/pages/CatalogPage'
 import ProductDetailPage from '@features/products/pages/ProductDetailPage'
+import CartPage from '@features/cart/pages/CartPage'
 
 // Placeholder for CheckoutPage
 const CheckoutPage = () => <div className="text-center p-8"><h1 className="text-3xl font-bold">Checkout</h1></div>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/registro" element={<RegisterPage />} />
         <Route path="/catalogo" element={<CatalogPage />} />
         <Route path="/producto/:id" element={<ProductDetailPage />} />
+        <Route path="/carrito" element={<CartPage />} />
         
         {/* Rutas protegidas */}
         <Route 

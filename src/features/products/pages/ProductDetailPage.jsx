@@ -1,21 +1,21 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Minus, Plus, ShoppingCart, ArrowLeft } from 'lucide-react'
-import { selectProductById, selectFilteredProducts } from '@features/products/productsSlice'
-// import { useCartStore } from '@store/cartStore' // Se adaptará a Redux
+import { selectProductById } from '@features/products/productsSlice'
+import { addItem } from '@features/cart/cartSlice'
 import Button from '@shared/components/Button'
 import ProductCard from '@shared/components/ProductCard'
 
 export default function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
 
   const product = useSelector((state) => selectProductById(state, id))
   const allProducts = useSelector((state) => state.products.products)
-  // const addItem = useCartStore((state) => state.addItem) // Se adaptará a Redux
 
   if (!product) {
     return (
@@ -32,7 +32,6 @@ export default function ProductDetailPage() {
     )
   }
 
-  // Mock de imágenes adicionales (en producción vendrían del producto)
   const images = [
     product.image,
     product.image,
@@ -44,19 +43,17 @@ export default function ProductDetailPage() {
     .slice(0, 4)
 
   const handleAddToCart = () => {
-    // addItem(product, quantity) // Se adaptará a Redux
-    console.log('Añadir al carrito (lógica pendiente)', product.name, quantity)
+    dispatch(addItem({ product, quantity }))
   }
 
   const handleBuyNow = () => {
-    // addItem(product, quantity) // Se adaptará a Redux
+    dispatch(addItem({ product, quantity }))
     navigate('/carrito')
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
         <nav className="mb-8">
           <ol className="flex items-center gap-2 text-sm">
             <li>
@@ -84,7 +81,6 @@ export default function ProductDetailPage() {
           </ol>
         </nav>
 
-        {/* Botón volver */}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-gray-600 hover:text-primary mb-6"
@@ -93,10 +89,8 @@ export default function ProductDetailPage() {
           Volver
         </button>
 
-        {/* Producto */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
-            {/* Imágenes */}
             <div>
               <div className="aspect-square rounded-lg overflow-hidden mb-4">
                 <img
@@ -126,7 +120,6 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Información */}
             <div>
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 bg-orange-100 text-primary text-sm font-medium rounded-full">
@@ -148,7 +141,6 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              {/* Stock */}
               <div className="mb-6">
                 {product.stock > 10 ? (
                   <p className="text-green-600 font-medium">
@@ -165,7 +157,6 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              {/* Cantidad */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Cantidad
@@ -196,7 +187,6 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              {/* Botones */}
               <div className="flex gap-4">
                 <Button
                   size="lg"
@@ -221,7 +211,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Productos relacionados */}
         {relatedProducts.length > 0 && (
           <section>
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
