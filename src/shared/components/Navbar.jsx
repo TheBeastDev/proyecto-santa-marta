@@ -3,6 +3,7 @@ import { ShoppingCart, User, Menu, X } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { selectTotalItems } from '@features/cart/cartSlice'
 import { useState } from 'react'
+import logo from '@assets/cake-roll.svg'
 
 export default function Navbar() {
   const totalItems = useSelector(selectTotalItems)
@@ -15,7 +16,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded"></div>
+            <img src={logo} alt="logo" className="w-8 h-8" />
             <span className="text-xl font-bold text-gray-900">
               Panadería Santa Martha
             </span>

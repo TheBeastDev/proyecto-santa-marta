@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react'
+import logo from '@assets/cake-roll.svg'
 
 export default function Footer() {
   return (
@@ -9,7 +10,7 @@ export default function Footer() {
           {/* Logo y descripción */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded"></div>
+              <img src={logo} alt="logo" className="w-8 h-8" />
               <span className="text-xl font-bold text-white">
                 Panadería Santa Martha
               </span>
